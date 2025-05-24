@@ -11,6 +11,7 @@
       font-family: Arial, sans-serif;
       text-align: center;
       padding-top: 40px;
+      position: relative;
     }
     h1 {
       font-size: 48px;
@@ -30,6 +31,14 @@
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
+      position: relative;
+    }
+    #statusIcon {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 32px;
     }
     .button-row {
       display: flex;
@@ -52,7 +61,9 @@
 <body>
   <h1>AURA</h1>
   <h2>Duygunu Yansıtan Yüzün</h2>
-  <div id="face" style="background-image: url('notr.gif');"></div>
+  <div id="face" style="background-image: url('notr.gif');">
+    <div id="statusIcon">⏹</div>
+  </div>
 
   <div class="button-row">
     <button onclick="startRecognition()">Konuşmayı Başlat</button>
@@ -65,6 +76,7 @@
 
   <script>
     const face = document.getElementById('face');
+    const statusIcon = document.getElementById('statusIcon');
     const textDisplay = document.getElementById('text');
     let lastSpokenText = "";
     let recognition;
@@ -83,13 +95,13 @@
     function analyzeEmotion(text) {
       text = text.toLowerCase();
 
-      if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("harikayım") || text.includes("sevin") || text.includes("güzel bir gündü")) return "mutlu";
-      if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat") || text.includes("moralsiz") || text.includes("keyfim yok")) return "üzgün";
-      if (text.includes("kızgın") || text.includes("öfke") || text.includes("sinirliyim") || text.includes("cidden sinirlendim") || text.includes("kendimi tutamıyorum") || text.includes("girme kanıma")) return "kızgın";
-      if (text.includes("inanamıyorum") || text.includes("nasıl yani") || text.includes("ne alaka") || text.includes("gerçek mi") || text.includes("yok artık")) return "şaşkın";
-      if (text.includes("tedirgin") || text.includes("endişeliyim") || text.includes("rahat değilim") || text.includes("bir tuhafım") || text.includes("dürtülerime engel olamıyorum")) return "endişeli";
-      if (text.includes("utan") || text.includes("mahcup") || text.includes("yüzüm kızardı") || text.includes("gözlerine bakamıyorum")) return "utanmış";
-      if (text.includes("hayranım") || text.includes("büyülendim") || text.includes("göz kamaştırdı") || text.includes("inanılmazdı") || text.includes("muhteşem")) return "hayranlık";
+      if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("sevinç") || text.includes("harikayım") || text.includes("iyi hissediyorum") || text.includes("çok güzel") || text.includes("mükemmel")) return "mutlu";
+      if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat") || text.includes("moralsiz") || text.includes("keyfim yok") || text.includes("düşkün") || text.includes("çöktüm")) return "üzgün";
+      if (text.includes("kızgın") || text.includes("öfke") || text.includes("öfkeliyim") || text.includes("sinirliyim") || text.includes("çok sinirlendim") || text.includes("kendimi tutamıyorum") || text.includes("girme kanıma") || text.includes("agresif") || text.includes("sert çıktım") || text.includes("gerildim")) return "kızgın";
+      if (text.includes("şaşkın") || text.includes("inanamıyorum") || text.includes("nasıl yani") || text.includes("ne alaka") || text.includes("gerçek mi") || text.includes("yok artık") || text.includes("şaşırdım")) return "şaşkın";
+      if (text.includes("endişe") || text.includes("tedirgin") || text.includes("rahat değilim") || text.includes("bir tuhafım") || text.includes("kaygılıyım") || text.includes("kararsızım") || text.includes("içimde bir huzursuzluk var")) return "endişeli";
+      if (text.includes("utan") || text.includes("mahcup") || text.includes("yüzüm kızardı") || text.includes("gözlerine bakamıyorum") || text.includes("çekindim") || text.includes("sıkıldım")) return "utanmış";
+      if (text.includes("hayranım") || text.includes("büyülendim") || text.includes("göz kamaştırdı") || text.includes("inanılmazdı") || text.includes("muhteşem") || text.includes("hayran kaldım") || text.includes("ağzım açık kaldı")) return "hayranlık";
 
       return "nötr";
     }
@@ -100,6 +112,8 @@
       recognition.continuous = true;
       recognition.interimResults = false;
       recognition.start();
+
+      statusIcon.innerText = "▶️";
 
       recognition.onresult = function(event) {
         const text = event.results[event.results.length - 1][0].transcript;
@@ -118,6 +132,8 @@
       if (recognition) {
         recognition.stop();
       }
+      statusIcon.innerText = "⏹";
+      textDisplay.innerText = "";
     }
 
     function downloadText() {
@@ -142,6 +158,7 @@
       lastSpokenText = "";
       textDisplay.innerText = "";
       face.style.backgroundImage = "url('notr.gif')";
+      statusIcon.innerText = "⏹";
     }
   </script>
 </body>
