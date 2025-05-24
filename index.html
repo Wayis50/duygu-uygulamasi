@@ -3,7 +3,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>AURA</title>
+  <title>OPORDAJE</title>
   <style>
     body {
       background-color: #000;
@@ -61,7 +61,7 @@
   </style>
 </head>
 <body>
-  <h1>AURA</h1>
+  <h1>OPORDAJE</h1>
   <h2>Duygunu Yansıtan Yüzün</h2>
   <div id="face" style="background-image: url('notr.gif');">
     <div id="statusIcon" style="color: red;">⏹</div>
@@ -94,9 +94,18 @@
       "hayranlık": "hayranlik.gif"
     };
 
+    function formatText(text) {
+      text = text.trim();
+      if (!text) return "";
+      text = text.charAt(0).toUpperCase() + text.slice(1);
+      if (!/[.!?]$/.test(text)) {
+        text += ".";
+      }
+      return text + " ";
+    }
+
     function analyzeEmotion(text) {
       text = text.toLowerCase();
-
       if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("sevinç") || text.includes("harikayım") || text.includes("iyi hissediyorum") || text.includes("çok güzel") || text.includes("mükemmel")) return "mutlu";
       if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat") || text.includes("moralsiz") || text.includes("keyfim yok") || text.includes("düşkün") || text.includes("çöktüm")) return "üzgün";
       if (text.includes("kızgın") || text.includes("öfke") || text.includes("öfkeliyim") || text.includes("sinirliyim") || text.includes("çok sinirlendim") || text.includes("kendimi tutamıyorum") || text.includes("girme kanıma") || text.includes("agresif") || text.includes("sert çıktım") || text.includes("gerildim")) return "kızgın";
@@ -104,7 +113,6 @@
       if (text.includes("endişe") || text.includes("tedirgin") || text.includes("rahat değilim") || text.includes("bir tuhafım") || text.includes("kaygılıyım") || text.includes("kararsızım") || text.includes("içimde bir huzursuzluk var")) return "endişeli";
       if (text.includes("utan") || text.includes("mahcup") || text.includes("yüzüm kızardı") || text.includes("gözlerine bakamıyorum") || text.includes("çekindim") || text.includes("sıkıldım")) return "utanmış";
       if (text.includes("hayranım") || text.includes("büyülendim") || text.includes("göz kamaştırdı") || text.includes("inanılmazdı") || text.includes("muhteşem") || text.includes("hayran kaldım") || text.includes("ağzım açık kaldı")) return "hayranlık";
-
       return "nötr";
     }
 
@@ -114,18 +122,16 @@
       recognition.continuous = true;
       recognition.interimResults = false;
       recognition.start();
-
       statusIcon.innerText = "▶️";
       statusIcon.style.color = "lime";
-
       recognition.onresult = function(event) {
-        const text = event.results[event.results.length - 1][0].transcript;
-        lastSpokenText += text + " ";
+        const rawText = event.results[event.results.length - 1][0].transcript;
+        const formatted = formatText(rawText);
+        lastSpokenText += formatted;
         textDisplay.innerText = lastSpokenText;
-        const emotion = analyzeEmotion(text);
+        const emotion = analyzeEmotion(rawText);
         face.style.backgroundImage = `url('${emotions[emotion]}')`;
       };
-
       recognition.onerror = function(event) {
         textDisplay.innerText = 'Hata: ' + event.error;
       };
