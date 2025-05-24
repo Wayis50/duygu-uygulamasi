@@ -132,6 +132,7 @@
         recognition.stop();
       }
       isRecognizing = false;
+      lastSpokenText = "";  // artık sıfırlanıyor
       statusIcon.innerText = "⏹";
       statusIcon.style.color = "red";
       textDisplay.innerText = "";
