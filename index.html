@@ -132,7 +132,7 @@
         recognition.stop();
       }
       isRecognizing = false;
-      lastSpokenText = "";  // artık sıfırlanıyor
+      lastSpokenText = "";
       statusIcon.innerText = "⏹";
       statusIcon.style.color = "red";
       textDisplay.innerText = "";
@@ -143,10 +143,14 @@
         alert("Henüz bir konuşma yapılmadı.");
         return;
       }
+
+      const now = new Date();
+      const filename = `konusma-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}_${String(now.getHours()).padStart(2, "0")}-${String(now.getMinutes()).padStart(2, "0")}.txt`;
+
       const blob = new Blob([lastSpokenText], { type: "text/plain" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "konusma.txt";
+      link.download = filename;
       link.click();
     }
 
