@@ -13,8 +13,8 @@
       padding-top: 40px;
     }
     #face {
-      width: 300px;
-      height: 300px;
+      width: 400px;
+      height: 400px;
       margin: 20px auto;
       border-radius: 20px;
       background-size: contain;
@@ -39,6 +39,7 @@
   <button onclick="startRecognition()">Konuşmayı Başlat</button>
   <button onclick="stopRecognition()">Konuşmayı Bitir</button>
   <button onclick="downloadText()">Konuşmayı Kaydet</button>
+  <button onclick="newConversation()">Yeni Konuşma</button>
   <p id="text"></p>
 
   <script>
@@ -60,7 +61,6 @@
 
     function analyzeEmotion(text) {
       text = text.toLowerCase();
-
       if (text.includes("utan") || text.includes("mahcup")) return "utanmış";
       if (text.includes("hayran") || text.includes("büyüleyici") || text.includes("çok etkilendim") || text.includes("ağzım açık kaldı")) return "hayranlık";
       if (text.includes("endişe") || text.includes("kork") || text.includes("tedirgin")) return "endişeli";
@@ -68,7 +68,6 @@
       if (text.includes("şaşkın") || text.includes("nasıl yani") || text.includes("inanamıyorum") || text.includes("ne alaka")) return "şaşkın";
       if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("çok güzel")) return "mutlu";
       if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat")) return "üzgün";
-
       return "nötr";
     }
 
@@ -108,6 +107,18 @@
       link.href = URL.createObjectURL(blob);
       link.download = "konusma.txt";
       link.click();
+    }
+
+    function newConversation() {
+      if (lastSpokenText.trim()) {
+        const save = confirm("Önceki konuşmayı kaydetmek ister misiniz?");
+        if (save) {
+          downloadText();
+        }
+      }
+      lastSpokenText = "";
+      textDisplay.innerText = "";
+      face.style.backgroundImage = "url('notr.gif')";
     }
   </script>
 </body>
