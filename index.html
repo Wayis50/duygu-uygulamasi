@@ -13,49 +13,26 @@
       padding-top: 40px;
       position: relative;
     }
-    h1 {
-      font-size: 48px;
-      margin-bottom: 0;
-    }
-    h2 {
-      font-size: 20px;
-      color: #888;
-      margin-top: 5px;
-      margin-bottom: 30px;
-    }
+    h1 { font-size: 48px; margin-bottom: 0; }
+    h2 { font-size: 20px; color: #888; margin-top: 5px; margin-bottom: 30px; }
     #face {
-      width: 400px;
-      height: 400px;
-      margin: 20px auto;
-      border-radius: 20px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+      width: 400px; height: 400px; margin: 20px auto;
+      border-radius: 20px; background-size: contain;
+      background-repeat: no-repeat; background-position: center;
       position: relative;
     }
     #statusIcon {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 30px;
-      background-color: #000;
-      padding: 5px 8px;
-      border-radius: 8px;
+      position: absolute; top: 10px; left: 10px; font-size: 30px;
+      background-color: #000; padding: 5px 8px; border-radius: 8px;
     }
     .button-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 10px; margin-bottom: 20px;
     }
     .button-row button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      background-color: #00ffff;
-      color: #000;
+      padding: 10px 20px; font-size: 16px;
+      border: none; border-radius: 10px;
+      background-color: #00ffff; color: #000;
       cursor: pointer;
     }
   </style>
@@ -108,13 +85,13 @@
 
     function analyzeEmotion(text) {
       text = text.toLowerCase();
-      if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("sevinç") || text.includes("harikayım") || text.includes("iyi hissediyorum") || text.includes("çok güzel") || text.includes("mükemmel")) return "mutlu";
-      if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat") || text.includes("moralsiz") || text.includes("keyfim yok") || text.includes("düşkün") || text.includes("çöktüm")) return "üzgün";
-      if (text.includes("kızgın") || text.includes("öfke") || text.includes("öfkeliyim") || text.includes("sinirliyim") || text.includes("çok sinirlendim") || text.includes("kendimi tutamıyorum") || text.includes("girme kanıma") || text.includes("agresif") || text.includes("sert çıktım") || text.includes("gerildim")) return "kızgın";
-      if (text.includes("şaşkın") || text.includes("inanamıyorum") || text.includes("nasıl yani") || text.includes("ne alaka") || text.includes("gerçek mi") || text.includes("yok artık") || text.includes("şaşırdım")) return "şaşkın";
-      if (text.includes("endişe") || text.includes("tedirgin") || text.includes("rahat değilim") || text.includes("bir tuhafım") || text.includes("kaygılıyım") || text.includes("kararsızım") || text.includes("içimde bir huzursuzluk var")) return "endişeli";
-      if (text.includes("utan") || text.includes("mahcup") || text.includes("yüzüm kızardı") || text.includes("gözlerine bakamıyorum") || text.includes("çekindim") || text.includes("sıkıldım")) return "utanmış";
-      if (text.includes("hayranım") || text.includes("büyülendim") || text.includes("göz kamaştırdı") || text.includes("inanılmazdı") || text.includes("muhteşem") || text.includes("hayran kaldım") || text.includes("ağzım açık kaldı")) return "hayranlık";
+      if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("sevinç") || text.includes("iyi hissediyorum")) return "mutlu";
+      if (text.includes("üzgün") || text.includes("mutsuz") || text.includes("kötü") || text.includes("çöktüm")) return "üzgün";
+      if (text.includes("kızgın") || text.includes("öfke") || text.includes("sinirli") || text.includes("agresif")) return "kızgın";
+      if (text.includes("şaşkın") || text.includes("şaşırdım") || text.includes("nasıl yani")) return "şaşkın";
+      if (text.includes("endişe") || text.includes("kaygı") || text.includes("tedirgin")) return "endişeli";
+      if (text.includes("utan") || text.includes("mahcup")) return "utanmış";
+      if (text.includes("hayran")) return "hayranlık";
       return "nötr";
     }
 
@@ -173,6 +150,10 @@
     }
 
     function newConversation() {
+      if (recognition) {
+        recognition.stop();
+        isRecognizing = false;
+      }
       if (lastSpokenText.trim()) {
         const save = confirm("Önceki konuşmayı kaydetmek ister misiniz?");
         if (save) {
