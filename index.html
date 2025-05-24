@@ -69,6 +69,7 @@
 
   <div class="button-row">
     <button onclick="startRecognition()">Konuşmayı Başlat</button>
+    <button onclick="pauseRecognition()">Duraklat</button>
     <button onclick="stopRecognition()">Konuşmayı Bitir</button>
     <button onclick="downloadText()">Konuşmayı Kaydet</button>
     <button onclick="newConversation()">Yeni Konuşma</button>
@@ -82,6 +83,7 @@
     const textDisplay = document.getElementById('text');
     let lastSpokenText = "";
     let recognition;
+    let isRecognizing = false;
 
     const emotions = {
       "mutlu": "mutlu.gif",
@@ -117,11 +119,13 @@
     }
 
     function startRecognition() {
+      if (isRecognizing) return;
       recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = 'tr-TR';
       recognition.continuous = true;
       recognition.interimResults = false;
       recognition.start();
+      isRecognizing = true;
       statusIcon.innerText = "▶️";
       statusIcon.style.color = "lime";
       recognition.onresult = function(event) {
@@ -137,10 +141,20 @@
       };
     }
 
+    function pauseRecognition() {
+      if (recognition && isRecognizing) {
+        recognition.stop();
+        isRecognizing = false;
+        statusIcon.innerText = "⏸";
+        statusIcon.style.color = "orange";
+      }
+    }
+
     function stopRecognition() {
       if (recognition) {
         recognition.stop();
       }
+      isRecognizing = false;
       statusIcon.innerText = "⏹";
       statusIcon.style.color = "red";
       textDisplay.innerText = "";
