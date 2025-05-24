@@ -82,13 +82,15 @@
 
     function analyzeEmotion(text) {
       text = text.toLowerCase();
-      if (text.includes("utan") || text.includes("mahcup")) return "utanmış";
-      if (text.includes("hayran") || text.includes("büyüleyici") || text.includes("çok etkilendim") || text.includes("ağzım açık kaldı")) return "hayranlık";
-      if (text.includes("endişe") || text.includes("kork") || text.includes("tedirgin")) return "endişeli";
-      if (text.includes("öfke") || text.includes("sinirli") || text.includes("kızgın") || text.includes("çok kızdım")) return "kızgın";
-      if (text.includes("şaşkın") || text.includes("nasıl yani") || text.includes("inanamıyorum") || text.includes("ne alaka")) return "şaşkın";
-      if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("çok güzel")) return "mutlu";
-      if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat")) return "üzgün";
+
+      if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("harikayım") || text.includes("sevin") || text.includes("güzel bir gündü")) return "mutlu";
+      if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat") || text.includes("moralsiz") || text.includes("keyfim yok")) return "üzgün";
+      if (text.includes("kızgın") || text.includes("öfke") || text.includes("sinirliyim") || text.includes("cidden sinirlendim") || text.includes("kendimi tutamıyorum") || text.includes("girme kanıma")) return "kızgın";
+      if (text.includes("inanamıyorum") || text.includes("nasıl yani") || text.includes("ne alaka") || text.includes("gerçek mi") || text.includes("yok artık")) return "şaşkın";
+      if (text.includes("tedirgin") || text.includes("endişeliyim") || text.includes("rahat değilim") || text.includes("bir tuhafım") || text.includes("dürtülerime engel olamıyorum")) return "endişeli";
+      if (text.includes("utan") || text.includes("mahcup") || text.includes("yüzüm kızardı") || text.includes("gözlerine bakamıyorum")) return "utanmış";
+      if (text.includes("hayranım") || text.includes("büyülendim") || text.includes("göz kamaştırdı") || text.includes("inanılmazdı") || text.includes("muhteşem")) return "hayranlık";
+
       return "nötr";
     }
 
