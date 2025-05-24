@@ -35,7 +35,7 @@
 </head>
 <body>
   <h1>Duygulu Mimik Yüz</h1>
-  <div id="face" style="background-image: url('notr.png');"></div>
+  <div id="face" style="background-image: url('notr.gif');"></div>
   <button onclick="startRecognition()">Konuşmayı Başlat</button>
   <button onclick="downloadText()">Konuşmayı Kaydet</button>
   <p id="text"></p>
@@ -58,13 +58,15 @@
 
     function analyzeEmotion(text) {
       text = text.toLowerCase();
-      if (text.includes("utan")) return "utanmış";
-      if (text.includes("hayran") || text.includes("büyüleyici")) return "hayranlık";
-      if (text.includes("kork") || text.includes("endişe")) return "endişeli";
-      if (text.includes("kız") || text.includes("sinir")) return "kızgın";
-      if (text.includes("şaşır") || text.includes("inanam")) return "şaşkın";
-      if (text.includes("mutlu") || text.includes("harika")) return "mutlu";
-      if (text.includes("üzgün") || text.includes("kötü")) return "üzgün";
+
+      if (text.includes("utan") || text.includes("mahcup")) return "utanmış";
+      if (text.includes("hayran") || text.includes("büyüleyici") || text.includes("çok etkilendim") || text.includes("ağzım açık kaldı")) return "hayranlık";
+      if (text.includes("endişe") || text.includes("kork") || text.includes("tedirgin")) return "endişeli";
+      if (text.includes("öfke") || text.includes("sinirli") || text.includes("kızgın") || text.includes("çok kızdım")) return "kızgın";
+      if (text.includes("şaşkın") || text.includes("nasıl yani") || text.includes("inanamıyorum") || text.includes("ne alaka")) return "şaşkın";
+      if (text.includes("mutlu") || text.includes("harika") || text.includes("keyfim yerinde") || text.includes("çok güzel")) return "mutlu";
+      if (text.includes("üzgün") || text.includes("kötü") || text.includes("mutsuz") || text.includes("berbat")) return "üzgün";
+
       return "nötr";
     }
 
