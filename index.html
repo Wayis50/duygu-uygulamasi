@@ -37,6 +37,7 @@
   <h1>Duygulu Mimik Yüz</h1>
   <div id="face" style="background-image: url('notr.gif');"></div>
   <button onclick="startRecognition()">Konuşmayı Başlat</button>
+  <button onclick="stopRecognition()">Konuşmayı Bitir</button>
   <button onclick="downloadText()">Konuşmayı Kaydet</button>
   <p id="text"></p>
 
@@ -44,6 +45,7 @@
     const face = document.getElementById('face');
     const textDisplay = document.getElementById('text');
     let lastSpokenText = "";
+    let recognition;
 
     const emotions = {
       "mutlu": "mutlu.gif",
@@ -71,14 +73,16 @@
     }
 
     function startRecognition() {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = 'tr-TR';
+      recognition.continuous = true;
+      recognition.interimResults = false;
       recognition.start();
 
       recognition.onresult = function(event) {
-        const text = event.results[0][0].transcript;
-        lastSpokenText = text;
-        textDisplay.innerText = '"' + text + '"';
+        const text = event.results[event.results.length - 1][0].transcript;
+        lastSpokenText += text + " ";
+        textDisplay.innerText = lastSpokenText;
         const emotion = analyzeEmotion(text);
         face.style.backgroundImage = `url('${emotions[emotion]}')`;
       };
@@ -86,6 +90,12 @@
       recognition.onerror = function(event) {
         textDisplay.innerText = 'Hata: ' + event.error;
       };
+    }
+
+    function stopRecognition() {
+      if (recognition) {
+        recognition.stop();
+      }
     }
 
     function downloadText() {
