@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Duygulu Mimik Yüz</title>
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 40px;
+    }
+    #face {
+      width: 300px;
+      height: 300px;
+      margin: 20px auto;
+      border-radius: 20px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      margin: 10px;
+      background-color: #00ffff;
+      color: #000;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Duygulu Mimik Yüz</h1>
+  <div id="face" style="background-image: url('notr.png');"></div>
+  <button onclick="startRecognition()">Konuşmayı Başlat</button>
+  <button onclick="downloadText()">Konuşmayı Kaydet</button>
+  <p id="text"></p>
+
+  <script>
+    const face = document.getElementById('face');
+    const textDisplay = document.getElementById('text');
+    let lastSpokenText = "";
+
+    const emotions = {
+      "mutlu": "mutlu.gif",
+      "üzgün": "uzgun.gif",
+      "nötr": "notr.gif",
+      "kızgın": "kizgin.gif",
+      "şaşkın": "saskin.gif",
+      "endişeli": "endiseli.gif",
+      "utanmış": "utanmis.gif",
+      "hayranlık": "hayranlik.gif"
+    };
+
+    function analyzeEmotion(text) {
+      text = text.toLowerCase();
+      if (text.includes("utan")) return "utanmış";
+      if (text.includes("hayran") || text.includes("büyüleyici")) return "hayranlık";
+      if (text.includes("kork") || text.includes("endişe")) return "endişeli";
+      if (text.includes("kız") || text.includes("sinir")) return "kızgın";
+      if (text.includes("şaşır") || text.includes("inanam")) return "şaşkın";
+      if (text.includes("mutlu") || text.includes("harika")) return "mutlu";
+      if (text.includes("üzgün") || text.includes("kötü")) return "üzgün";
+      return "nötr";
+    }
+
+    function startRecognition() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'tr-TR';
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const text = event.results[0][0].transcript;
+        lastSpokenText = text;
+        textDisplay.innerText = '"' + text + '"';
+        const emotion = analyzeEmotion(text);
+        face.style.backgroundImage = `url('${emotions[emotion]}')`;
+      };
+
+      recognition.onerror = function(event) {
+        textDisplay.innerText = 'Hata: ' + event.error;
+      };
+    }
+
+    function downloadText() {
+      if (!lastSpokenText) {
+        alert("Henüz bir konuşma yapılmadı.");
+        return;
+      }
+      const blob = new Blob([lastSpokenText], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "konusma.txt";
+      link.click();
+    }
+  </script>
+</body>
+</html>
